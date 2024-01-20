@@ -1,0 +1,12 @@
+tcpdump -n icmp #capture all icmp packets
+tcpdump -nn -i any tcp port 53 -w file.pcap #write to file
+tcpdump -i any dst xx.xx.xx.xx #traffic to destination server, change to src if server is source
+tcpdump -i any -s0 port 53 #inspect dns reqs and resp
+tcpdump -nnn -t -c 200 | cut -f 1,2,3,4 -d '.' | sort | uniq -c | sort -nr | head -n 20  #who talks the most
+
+
+My workflow to isolate DNS zone transfer traffic:
+
+tcpdump -nn -i any tcp port 53 > traffic_out.txt
+cat traffic_out.txt | awk '{print $3}' | cut -d "." -f 1,2,3,4 | sort -u
+
