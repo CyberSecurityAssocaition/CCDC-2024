@@ -1,0 +1,18 @@
+ip r l | grep src | awk '{for (i=1;i<=NF;i++) if ($i == "src") {print $(i+1)};}' ##Gives you IP
+ps -ax | grep <process> | grep -v grep | cut -c 1-5 | xargs kill -9 ##Kill process
+vmstat 1 2 -a | tail -1 | awk '{print $13+$14}' ##CPU usage
+top -b -n 1 | grep -i cpu | head -1 | awk '{print $2}' ##CPU usage using top
+who -u | grep <user> | awk '{print $6}' | xargs kill -9 ##Kill user's session
+tcpdump -XX -i any host <remote host address> -w filename.pcap ##Isolate inbound and outbound traffic from a remote host
+tcpdump -nn -i any tcp port 25 | awk '{print $3}' | cut -d "." -f 1,2,3,4 | sort -u ##Isolate addresses talking to SMTP server
+dmidecode -t bios -t chassis -t baseboard -t system | egrep "BIOS Information|Vendor:|System Information|Manufacturer:|Product Name:|UUID:|Chassis Information|Manufacturer:|Asset Tag:|Base Board Information|Manufacturer:"
+grep "^[^#;]" <config file> ##Read all lines which are not commented out
+ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10 ##find processes using the most CPU cycles
+cat output.txt | awk '$3 > 5 {print ;}' ##Check to see if the value in the third column is bigger than 5 or not
+openssl x509 -in cert.pem -text -noout ##Read a SSL cert
+openssl pkcs12 -in wildcard.pfx -nocerts -out key.pem -nodes ##Generate key from pfx file
+openssl pkcs12 -in wildcard.pfx -nokeys -out cert.pem -nodes ##Generate SSL cert from pfx file
+sar -q -s 06:00:00 -f /var/log/sa/sa08 ##SAR load average on the 8th day of the month, from 6AM
+find / -type f -exec du -Sh {} + | sort -rh | head -n 10 ##Find the largest file in a Linux system
+find . -type d -user <user> ##Find directories owned by user 
+cat <script.sh> | pdsh -w ^hostlist.txt ##Use parallel ssh sessions to run script for multiple hosts in hostlist, requires pdsh package
